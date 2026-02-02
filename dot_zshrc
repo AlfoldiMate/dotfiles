@@ -1,0 +1,7 @@
+# Aliases
+
+alias lazyvim='NVIM_APPNAME="nvim-lazyvim" nvim'
+
+# Loading Starship
+# Keep this at the end!
+eval "$(starship init zsh)"
