@@ -4,6 +4,7 @@ brew install yadm
 
 brew install wezterm
 brew install starship
+brew install antigen
 
 brew install thefuck
 brew install eza
