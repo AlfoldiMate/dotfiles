@@ -10,6 +10,5 @@ brew install eza
 brew install zoxide
 brew install tlrc
 brew install fzf
-brew intsall fd
 
 brew install yazi
