@@ -9,7 +9,6 @@ local config = wezterm.config_builder()
 config.font = wezterm.font("JetBrains Mono", { weight = "DemiBold", italic = false })
 config.font_size = 13
 
--- config.color_scheme = "catppuccin-macchiato"
 config.color_scheme = "Catppuccin Macchiato"
 
 config.initial_cols = 120

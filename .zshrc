@@ -1,5 +1,6 @@
 # Imports
-source /opt/Homebrew/share/antigen/antigen.zsh
+source /usr/local/share/antigen/antigen.zsh 2> /dev/null
+source /opt/Homebrew/share/antigen/antigen.zsh 2> /dev/null
 
 # Nv
 
@@ -39,6 +40,10 @@ alias cd="z"
 
 tabname() {
     echo -n -e "\033]0;$1\007"
+}
+
+cheat() {
+    curl cheat.sh/$1\?T | lazyvim
 }
 
 # Set up fzf key bindings and fuzzy completion
