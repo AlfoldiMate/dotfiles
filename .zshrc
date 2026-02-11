@@ -2,9 +2,9 @@
 source /usr/local/share/antigen/antigen.zsh 2> /dev/null
 source /opt/Homebrew/share/antigen/antigen.zsh 2> /dev/null
 
-# Nv
-
+# ENV
 export EZA_CONFIG_DIR=~/.config/eza/
+export EDITOR="nvim"
 
 # Plugins
 
@@ -15,38 +15,29 @@ antigen bundle zsh-users/zsh-history-substring-search
 
 antigen apply
 
-# The Fuck
-eval $(thefuck --alias)
-
 # completion using arrow keys (based on history)
 bindkey '^[[A' history-substring-search-up
 bindkey '^[[B' history-substring-search-down
 
 # Aliases
-alias lazyvim='NVIM_APPNAME="nvim-lazyvim" nvim'
-
 alias reload-zsh="source ~/.zshrc"
 alias edit-zsh="lazyvim ~/.zshrc"
 
 alias ls="eza --icons=always --sort=type --across"
 
-# ---- Zoxide (better cd) ----
+#  Zoxide (better cd) 
 eval "$(zoxide init zsh)"
 alias cd="z"
 
-# --- Yazi Setup ---
-# export EDITOR="NVIM_APPNAME="nvim-lazyvim" nvim"
-#
-
-tabname() {
-    echo -n -e "\033]0;$1\007"
-}
-
+# cheat.sh
 cheat() {
-    curl cheat.sh/$1\?T | lazyvim
+    curl cheat.sh/$1\?T | nvim
 }
 
-# Set up fzf key bindings and fuzzy completion
+# The Fuck
+eval $(thefuck --alias)
+
+# FZF 
 eval "$(fzf --zsh)"
 
 export FZF_DEFAULT_OPTS=" \
@@ -55,6 +46,11 @@ export FZF_DEFAULT_OPTS=" \
 --color=marker:#B7BDF8,fg+:#CAD3F5,prompt:#C6A0F6,hl+:#ED8796 \
 --color=selected-bg:#494D64 \
 --color=border:#6E738D,label:#CAD3F5"
+
+# Stuff
+title() {
+  echo -n -e "\033]0;$1\007"
+}
 
 # Loading Starship
 # Keep this at the end!
