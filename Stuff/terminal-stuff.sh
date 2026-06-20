@@ -2,11 +2,11 @@
 
 brew install yadm
 
-brew install wezterm
+brew install ghostty
 brew install starship
-brew install antigen
+brew install sheldon
 
-brew install thefuck
+brew install pay-respects
 brew install eza
 brew install zoxide
 brew install tlrc
