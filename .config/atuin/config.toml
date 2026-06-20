@@ -1,0 +1,4 @@
+search_mode = "fuzzy"
+style = "compact"
+inline_height = 20
+enter_accept = true
