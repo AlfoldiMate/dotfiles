@@ -1,45 +1,53 @@
-# Imports
-source /usr/local/share/antigen/antigen.zsh 2> /dev/null
-source /opt/Homebrew/share/antigen/antigen.zsh 2> /dev/null
+# ── PATH (early so later tools resolve) ──
+# ~/.cargo/bin is required: pay-respects is installed there (cargo, no brew formula).
+export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
+fpath+=~/.zfunc
 
-# ENV
+# ── ENV ──
 export EZA_CONFIG_DIR=~/.config/eza/
 export EDITOR="nvim"
 
-# Plugins
+# ── History ──
+HISTFILE=~/.zsh_history
+HISTSIZE=50000
+SAVEHIST=50000
+setopt SHARE_HISTORY HIST_IGNORE_ALL_DUPS HIST_IGNORE_SPACE HIST_REDUCE_BLANKS HIST_VERIFY EXTENDED_HISTORY
+setopt AUTO_CD INTERACTIVE_COMMENTS
 
-antigen bundle Aloxaf/fzf-tab
-antigen bundle zsh-users/zsh-syntax-highlighting
-antigen bundle zsh-users/zsh-autosuggestions
-antigen bundle zsh-users/zsh-history-substring-search
+# ── Completion (cached compinit; MUST precede fzf-tab via sheldon below) ──
+autoload -Uz compinit
+if [[ -n ~/.zcompdump(#qN.mh+24) ]]; then
+  compinit          # dump older than 24h (or first run): full rebuild
+else
+  compinit -C       # fresh dump: skip security check, faster
+fi
 
-antigen apply
+# fzf-tab / completion styling
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+zstyle ':completion:*' menu no
+zstyle ':completion:*:descriptions' format '[%d]'
+zstyle ':fzf-tab:*' use-fzf-default-opts yes
 
-# completion using arrow keys (based on history)
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
+# ── Plugins (sheldon; non-critical ones deferred for instant prompt) ──
+eval "$(sheldon source)"
 
-# Aliases
+# history-substring-search keybinds — deferred so the widget exists first (↑/↓)
+zsh-defer -c 'bindkey "^[[A" history-substring-search-up'
+zsh-defer -c 'bindkey "^[[B" history-substring-search-down'
+
+# ── Aliases ──
 alias reload-zsh="source ~/.zshrc"
 alias edit-zsh="lazyvim ~/.zshrc"
-
 alias ls="eza --icons=always --sort=type --across"
 
-#  Zoxide (better cd) 
-eval "$(zoxide init zsh)"
-alias cd="z"
+# ── zoxide (cd replacement) ──
+eval "$(zoxide init zsh --cmd cd)"
 
-# cheat.sh
-cheat() {
-    curl cheat.sh/$1\?T | nvim
-}
+# ── pay-respects (thefuck replacement; alias: fuck) ──
+eval "$(pay-respects zsh --alias fuck)"
 
-# The Fuck
-eval $(thefuck --alias)
-
-# FZF 
+# ── fzf ──
 eval "$(fzf --zsh)"
-
 export FZF_DEFAULT_OPTS=" \
 --color=bg+:#363A4F,bg:#24273A,spinner:#F4DBD6,hl:#ED8796 \
 --color=fg:#CAD3F5,header:#ED8796,info:#C6A0F6,pointer:#F4DBD6 \
@@ -47,11 +55,18 @@ export FZF_DEFAULT_OPTS=" \
 --color=selected-bg:#494D64 \
 --color=border:#6E738D,label:#CAD3F5"
 
-# Stuff
+# ── Helpers ──
+cheat() {
+    curl cheat.sh/$1\?T | nvim
+}
 title() {
   echo -n -e "\033]0;$1\007"
 }
 
-# Loading Starship
-# Keep this at the end!
+# ── Prompt (keep last) ──
 eval "$(starship init zsh)"
+
+# ── bun ──
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+[ -s "$BUN_INSTALL/_bun" ] && source "$BUN_INSTALL/_bun"
