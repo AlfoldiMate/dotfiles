@@ -6,6 +6,8 @@ fpath+=~/.zfunc
 # ── ENV ──
 export EZA_CONFIG_DIR=~/.config/eza/
 export EDITOR="nvim"
+export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+export MANROFFOPT="-c"
 
 # ── History ──
 HISTFILE=~/.zsh_history
@@ -39,6 +41,11 @@ zsh-defer -c 'bindkey "^[[B" history-substring-search-down'
 alias reload-zsh="source ~/.zshrc"
 alias edit-zsh="lazyvim ~/.zshrc"
 alias ls="eza --icons=always --sort=type --across"
+alias ll="eza -l --icons=always --git --group-directories-first"
+alias la="eza -la --icons=always --git --group-directories-first"
+alias lt="eza --tree --level=2 --icons=always"
+alias l="eza --icons=always"
+alias cat='bat --paging=never'
 
 # ── zoxide (cd replacement) ──
 eval "$(zoxide init zsh --cmd cd)"
@@ -47,13 +54,22 @@ eval "$(zoxide init zsh --cmd cd)"
 eval "$(pay-respects zsh --alias fuck)"
 
 # ── fzf ──
-eval "$(fzf --zsh)"
+export FZF_DEFAULT_COMMAND='fd --type f --hidden --follow --exclude .git'
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND='fd --type d --hidden --follow --exclude .git'
+export FZF_CTRL_T_OPTS="--preview 'bat --color=always --style=numbers --line-range=:300 {}'"
+export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always --icons {} | head -200'"
 export FZF_DEFAULT_OPTS=" \
+--bind 'ctrl-/:toggle-preview' \
 --color=bg+:#363A4F,bg:#24273A,spinner:#F4DBD6,hl:#ED8796 \
 --color=fg:#CAD3F5,header:#ED8796,info:#C6A0F6,pointer:#F4DBD6 \
 --color=marker:#B7BDF8,fg+:#CAD3F5,prompt:#C6A0F6,hl+:#ED8796 \
 --color=selected-bg:#494D64 \
 --color=border:#6E738D,label:#CAD3F5"
+eval "$(fzf --zsh)"
+
+# ── atuin (ctrl-r only; MUST be after fzf --zsh so atuin wins ^R) ──
+eval "$(atuin init zsh --disable-up-arrow)"
 
 # ── Helpers ──
 cheat() {
