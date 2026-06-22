@@ -118,6 +118,32 @@
       "space c f": "editor::Format",
       "space c d": "diagnostics::Deploy",
 
+      // ── Debug (DAP via debugger::, breakpoints via editor::) ──────
+      // Mirrors LazyVim <leader>d… group. Zed's built-in DAP covers
+      // C/C++/Go/JS/TS/Python/Rust; Java/Ruby/Swift via extensions.
+      "space d b": "editor::ToggleBreakpoint",
+      "space d B": "editor::EditLogBreakpoint",       // conditional/log
+      "space d c": "debugger::Continue",              // continue (F5)
+      "space d C": "debugger::Continue",              // continue (no run-to-cursor in Zed)
+      "space d i": "debugger::StepInto",
+      "space d o": "debugger::StepOut",
+      "space d O": "debugger::StepOver",
+      "space d l": "debugger::Start",                 // launch/run debug
+      "space d P": "debugger::Pause",
+      "space d r": "task::Spawn",                     // task picker
+      "space d R": "debugger::RerunSession",          // restart session
+      "space d t": "debugger::Stop",                  // terminate
+      "space d u": "debug_panel::ToggleFocus",        // dap UI
+
+      // ── Test (uses tasks; see ~/.config/zed/tasks.json for global,
+      //    or .zed/tasks.json per project, for "run nearest" etc.) ──
+      "space t t": "task::Spawn",                     // pick a task / test
+      "space t r": ["task::Rerun", { "reevaluate_context": true }],   // rerun, fresh context (e.g. cursor moved)
+      "space t l": ["task::Rerun", { "reevaluate_context": false }],  // run last (same args)
+      "space t o": "terminal_panel::ToggleFocus",     // output panel
+      "space t O": "terminal_panel::ToggleFocus",
+      "space t S": "debugger::Stop",                  // stop running test/debug
+
       // ── Diagnostics / quickfix ────────────────────────────────────
       "space x x": "diagnostics::Deploy",
       "space x l": "diagnostics::Deploy",
